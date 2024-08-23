@@ -1,12 +1,20 @@
 using BlazorApp.Client.Pages;
 using BlazorApp.Components;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// コントローラーのサービスを登録
+builder.Services.AddControllers();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.Configure<HubOptions>(options =>
+{
+    options.MaximumReceiveMessageSize = null;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,8 +34,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+// コントローラのルーティングを追加
+app.MapControllers();
+
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Counter).Assembly);
+    .AddAdditionalAssemblies(typeof(BlazorApp.Client._Imports).Assembly);
 
 app.Run();

@@ -1,23 +1,50 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<RadzenComponents />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+<RadzenLayout Style=" grid-template-columns: auto 1fr auto; grid-template-areas: 'rz-header rz-header rz-header' 'rz-sidebar rz-body rz-right-sidebar'">
+	<RadzenHeader>
+		<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+			<RadzenRow class="w-100">
+				<RadzenColumn Size="6">
+					<div class="d-flex align-items-center">
+						<RadzenSidebarToggle Click="@(() => sidebar5Expanded = !sidebar5Expanded)" />
+						<RadzenLabel Text="タイトル">
+						</RadzenLabel>
+					</div>
+				</RadzenColumn>
+			</RadzenRow>
+		</RadzenStack>
+	</RadzenHeader>
+	<RadzenSidebar @bind-Expanded="@sidebar5Expanded">
+		<RadzenPanelMenu style="height: 100%;">
+			<ChildContent>
+				<RadzenPanelMenuItem Icon="bug_report" Text="Home" Path="">
+				</RadzenPanelMenuItem>
+				<RadzenPanelMenuItem Icon="bug_report" Text="Counter" Path="counter">
+				</RadzenPanelMenuItem>
+				<RadzenPanelMenuItem Icon="bug_report" Text="Weather" Path="weather">
+				</RadzenPanelMenuItem>
+			</ChildContent>
+		</RadzenPanelMenu>
+	</RadzenSidebar>
+	<RadzenBody>
+		<ChildContent>
+			<RadzenContentContainer Name="main">
+				@Body
+			</RadzenContentContainer>
+		</ChildContent>
+	</RadzenBody>
+</RadzenLayout>
+@code {
+	int sidebarWidth = 0;
+	bool sidebar5Expanded = true;
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+	string Status = string.Empty;
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+	bool IsMask = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+	}
+}
